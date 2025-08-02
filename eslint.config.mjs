@@ -13,15 +13,30 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+const jestConfigs = [
+  ...compat.extends(
+    'next/core-web-vitals',
+    'next/typescript',
+    'plugin:jest/recommended',
+  ),
   {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.ts'],
+    ...compat.extends('next/core-web-vitals', 'next/typescript'),
     ...compat.extends('plugin:jest/recommended'),
     rules: {
       'jest/no-disabled-tests': 'warn',
     },
   },
+];
+
+const eslintConfig = [
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+
+  ...jestConfigs.map((config) => ({
+    ...config,
+    files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.ts'],
+  })),
+
   {
     rules: {
       // Core ESLint Rules
