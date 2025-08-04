@@ -2,13 +2,14 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import ToDoCard from '../components/ToDoCard';
+import ToDoCard from '../components/ToDoCard/ToDoCard';
 
 describe('To Do Card', () => {
   const mockData = {
     id: 1,
     title: 'Write test cases for component',
     date: '2025-08-01T12:00:00.000Z',
+    priority: 1 as 1 | 2 | 3,
     isCompleted: false,
     onToggle: jest.fn(),
   };
@@ -32,6 +33,33 @@ describe('To Do Card', () => {
     it('renders a checkbox', () => {
       render(<ToDoCard {...mockData} />);
       expect(screen.getByRole('checkbox')).toBeInTheDocument();
+    });
+
+    it('renders description', () => {
+      render(<ToDoCard {...mockData} description="description sample" />);
+      expect(screen.getByText('description sample')).toBeInTheDocument();
+    });
+
+    it('renders high priority', () => {
+      render(<ToDoCard {...mockData} priority={3} />);
+      expect(screen.getByText('!!!')).toBeInTheDocument();
+    });
+
+    it('renders normal priority', () => {
+      render(<ToDoCard {...mockData} priority={2} />);
+      expect(screen.getByText('!!')).toBeInTheDocument();
+    });
+
+    it('renders low priority properly', () => {
+      render(<ToDoCard {...mockData} priority={1} />);
+      expect(screen.queryByText('!!')).not.toBeInTheDocument();
+      expect(screen.queryByText('!!!')).not.toBeInTheDocument();
+    });
+
+    it('renders tags', () => {
+      render(<ToDoCard {...mockData} tags={['test', 'test2']} />);
+      expect(screen.queryByText('test')).toBeInTheDocument();
+      expect(screen.queryByText('test2')).toBeInTheDocument();
     });
   });
 
