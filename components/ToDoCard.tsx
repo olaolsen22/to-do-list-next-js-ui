@@ -2,15 +2,15 @@
 import React from 'react';
 
 import { formatDate } from '@/lib/date';
+import type { ToDoCardProps } from '@/types';
 
-interface Props {
-  title: string;
-  date: string;
-  isCompleted: boolean;
-  onToggle: () => void;
-}
-
-const ToDoCard = ({ title, date, isCompleted, onToggle }: Props) => (
+const ToDoCard = ({
+  id,
+  title,
+  date,
+  isCompleted,
+  onToggle,
+}: ToDoCardProps) => (
   <div className="card w-96 bg-white shadow-sm">
     <div className="card-body flex flex-row gap-3">
       <input
@@ -18,6 +18,7 @@ const ToDoCard = ({ title, date, isCompleted, onToggle }: Props) => (
         onChange={onToggle}
         checked={isCompleted}
         className="checkbox checkbox-primary checkbox-md self-center rounded-full"
+        data-testid={`todo-list-checkbox-${id}`}
       />
       <div className="align-center flex flex-col">
         <p
