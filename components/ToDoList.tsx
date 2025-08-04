@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { sortToDoListByDate } from '@/lib/sort';
 import type { ToDoCardProps } from '@/types';
 
-import ToDoCard from './ToDoCard';
+import ToDoCard from './ToDoCard/ToDoCard';
 
 interface ToDoListProps {
   items: Array<ToDoCardProps>;
