@@ -1,5 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -9,37 +7,22 @@ import storybook from 'eslint-plugin-storybook';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const jestConfigs = [
-  ...compat.extends(
-    'next/core-web-vitals',
-    'next/typescript',
-    'plugin:jest/recommended',
-  ),
-  {
-    files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.ts'],
-    ...compat.extends('next/core-web-vitals', 'next/typescript'),
-    ...compat.extends('plugin:jest/recommended'),
-    rules: {
-      'jest/no-disabled-tests': 'warn',
-    },
-  },
-];
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
 
-  ...jestConfigs.map((config) => ({
-    ...config,
+  ...compat.extends('plugin:jest/recommended'),
+
+  {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.ts'],
-  })),
+    rules: {
+      'jest/no-disabled-tests': 'warn',
+    },
+  },
 
   {
     rules: {
-      // Core ESLint Rules
       'arrow-body-style': ['error', 'as-needed'],
       'eol-last': 'error',
       eqeqeq: 'error',
@@ -47,7 +30,6 @@ const eslintConfig = [
       'no-shadow': 'off',
       'prefer-const': 'error',
 
-      // Import Rules
       'import/order': [
         'warn',
         {
@@ -64,7 +46,6 @@ const eslintConfig = [
         },
       ],
 
-      // TypeScript Rules
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -74,7 +55,6 @@ const eslintConfig = [
         { args: 'after-used', ignoreRestSiblings: true },
       ],
 
-      // Accessibility Rules
       'jsx-a11y/tabindex-no-positive': 'error',
     },
   },
