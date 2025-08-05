@@ -16,14 +16,17 @@ const TextArea = ({
   onChange,
 }: TextAreaProps) => (
   <>
-    <legend className="fieldset-legend">{label}</legend>
+    <label className="label" htmlFor={`${label}-input`}>
+      {label}
+    </label>
     <textarea
+      id={`${label}-input`}
       className="textarea h-24 w-full"
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-    ></textarea>
+    />
   </>
 );
 
