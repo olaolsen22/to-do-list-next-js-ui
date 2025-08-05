@@ -9,7 +9,7 @@ export interface RadioGroupProps {
   label: string;
   selectedValue: string;
   options: Array<OptionProps>;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
