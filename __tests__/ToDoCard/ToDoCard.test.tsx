@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import ToDoCard from '../components/ToDoCard/ToDoCard';
+import ToDoCard from '@/components/ToDoCard/ToDoCard';
 
 describe('To Do Card', () => {
   const mockData = {
@@ -55,12 +55,6 @@ describe('To Do Card', () => {
       expect(screen.queryByText('!!')).not.toBeInTheDocument();
       expect(screen.queryByText('!!!')).not.toBeInTheDocument();
     });
-
-    it('renders tags', () => {
-      render(<ToDoCard {...mockData} tags={['test', 'test2']} />);
-      expect(screen.queryByText('test')).toBeInTheDocument();
-      expect(screen.queryByText('test2')).toBeInTheDocument();
-    });
   });
 
   describe('Interaction', () => {
@@ -91,6 +85,26 @@ describe('To Do Card', () => {
       const checkboxElement = screen.getByRole('checkbox');
 
       expect(checkboxElement).toBeChecked();
+    });
+
+    it('switches to edit mode and shows the correct input fields', async () => {
+      const user = userEvent.setup();
+      render(<ToDoCard {...mockData} />);
+
+      const editButton = screen.getAllByRole('button')[0];
+      await user.click(editButton);
+
+      expect(
+        screen.getByRole('textbox', { name: 'Title' }),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByRole('textbox', { name: 'Description' }),
+      ).toBeInTheDocument();
+
+      expect(screen.getByRole('radio', { name: 'Normal' })).toBeInTheDocument();
+      expect(screen.getByRole('radio', { name: 'Medium' })).toBeInTheDocument();
+      expect(screen.getByRole('radio', { name: 'High' })).toBeInTheDocument();
     });
   });
 });

@@ -31,7 +31,7 @@ const ToDoList = ({ items, onToggle }: ToDoListProps) => {
   return (
     <ul className="to-do-list flex flex-col gap-4">
       {itemList.map((item, index) => (
-        <li key={`todo-item-${item}`}>
+        <li key={`todo-item-${item.id}`}>
           <ToDoCard {...item} onToggle={() => toggleToDoItem(index, item.id)} />
         </li>
       ))}

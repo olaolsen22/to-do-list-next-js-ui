@@ -13,6 +13,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 1',
       date: '2025-08-01T12:00:00.000Z',
       isCompleted: false,
+      priority: 1,
       onToggle: jest.fn(),
     },
     {
@@ -20,6 +21,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 2',
       date: '2025-07-30T12:00:00.000Z',
       isCompleted: true,
+      priority: 1,
       onToggle: jest.fn(),
     },
     {
@@ -27,6 +29,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 3',
       date: '2025-07-20T12:00:00.000Z',
       isCompleted: true,
+      priority: 1,
       onToggle: jest.fn(),
     },
   ];
