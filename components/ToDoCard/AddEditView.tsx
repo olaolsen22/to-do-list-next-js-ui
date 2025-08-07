@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import type { ToDoCardProps, ToDoDataProps } from '@/types';
+import type { ToDoDataProps } from '@/types';
 
 import Field from '../_Common/Field';
 import RadioGroup from '../_Common/RadioGroup';
@@ -16,7 +16,7 @@ const defaultData: ToDoDataProps = {
 };
 
 interface AddEditViewProps {
-  data?: ToDoCardProps;
+  data?: ToDoDataProps & { id?: number };
   onSave: (data: ToDoDataProps & { id?: number }) => void;
   saving?: boolean;
 }
@@ -58,7 +58,7 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
           onClick={() => onSave({ ...formData, id: data?.id })}
           disabled={saving}
         >
-          <span className="loading loading-spinner" />
+          {saving && <span className="loading loading-spinner" />}
           Save
         </button>
       </fieldset>

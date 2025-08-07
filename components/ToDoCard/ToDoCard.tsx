@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { formatDate } from '@/lib/date';
 import type { ToDoCardProps } from '@/types';
 
+import AddEditView from './AddEditView';
 import ControlPanel from './ControlPanel';
-import Tags from './Tags';
 
 const ToDoCard = ({
   id,
@@ -14,10 +14,12 @@ const ToDoCard = ({
   isCompleted,
   description,
   priority,
-  tags,
   onToggle,
 }: ToDoCardProps) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<'add' | 'edit' | 'expanded' | null>(
+    null,
+  );
 
   const renderPriority = () => {
     if (priority === 3) {
@@ -26,6 +28,15 @@ const ToDoCard = ({
       return <span className="bold text-warning text-sm">!!</span>;
     }
     return null;
+  };
+
+  const viewHandler = (view: 'add' | 'edit' | 'expanded' | null) => {
+    setViewMode(view);
+    if (view !== viewMode && view !== null && showDetails) {
+      setShowDetails(true);
+    } else {
+      setShowDetails(!showDetails);
+    }
   };
 
   return (
@@ -51,7 +62,8 @@ const ToDoCard = ({
           </div>
           <ControlPanel
             isExpanded={showDetails}
-            toggleExpand={(e) => setShowDetails(e)}
+            isEdit={viewMode === 'edit'}
+            toggleView={(view) => viewHandler(view)}
           />
         </div>
         <div
@@ -59,8 +71,22 @@ const ToDoCard = ({
             showDetails ? 'max-h-96' : 'max-h-0'
           }`}
         >
-          <p>{description}</p>
-          {tags && <Tags tags={tags} />}
+          {viewMode === 'edit' ? (
+            <AddEditView
+              data={{
+                id,
+                title,
+                date,
+                isCompleted,
+                description,
+                priority,
+              }}
+              onSave={() => console.log('save')}
+              saving={false}
+            />
+          ) : (
+            <p>{description}</p>
+          )}
         </div>
       </div>
     </div>
