@@ -1,12 +1,13 @@
-export interface ToDoDataProps {
-  title: string;
-  date: string;
-  isCompleted: boolean;
-  description?: string | null;
-  priority: 1 | 2 | 3;
+import type { Tables } from '@/lib/database.types';
+
+type ToDoItemRow = Tables<'to_do_items'>;
+
+export interface ToDoDataProps
+  extends Omit<ToDoItemRow, 'id' | 'completed_on'> {
+  completed_on?: string | null;
 }
 
 export interface ToDoCardProps extends ToDoDataProps {
   id: number;
-  onToggle: () => void;
+  onToggle: (id: number, done: boolean) => void;
 }
