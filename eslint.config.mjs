@@ -26,7 +26,7 @@ const eslintConfig = [
       'arrow-body-style': ['error', 'as-needed'],
       'eol-last': 'error',
       eqeqeq: 'error',
-      'no-console': 'warn',
+      'no-console': ['error', { allow: ['error'] }],
       'no-shadow': 'off',
       'prefer-const': 'error',
 
