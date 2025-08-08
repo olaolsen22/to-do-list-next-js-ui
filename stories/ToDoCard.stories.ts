@@ -20,12 +20,11 @@ export const Pending: Story = {
   args: {
     id: 1,
     title: 'To do title',
-    date: '2025-08-01T12:00:00.000Z',
-    isCompleted: false,
+    created_at: '2025-08-01T12:00:00.000Z',
+    done: false,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     priority: 1,
-    tags: ['home'],
   },
 };
 
@@ -33,38 +32,35 @@ export const Completed: Story = {
   args: {
     id: 1,
     title: 'To do title',
-    date: '2025-08-01T12:00:00.000Z',
-    isCompleted: true,
+    created_at: '2025-08-01T12:00:00.000Z',
+    done: true,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     priority: 1,
-    tags: ['home'],
   },
 };
 
-export const LowPrioriy: Story = {
+export const NormalPrioriy: Story = {
   args: {
     id: 1,
     title: 'To do title',
-    date: '2025-08-01T12:00:00.000Z',
-    isCompleted: false,
+    created_at: '2025-08-01T12:00:00.000Z',
+    done: false,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     priority: 1,
-    tags: ['home'],
   },
 };
 
-export const NormalPriority: Story = {
+export const MediumPriority: Story = {
   args: {
     id: 1,
     title: 'To do title',
-    date: '2025-08-01T12:00:00.000Z',
-    isCompleted: false,
+    created_at: '2025-08-01T12:00:00.000Z',
+    done: false,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     priority: 2,
-    tags: ['home', 'study', 'work-from-home', 'office', 'books'],
   },
 };
 
@@ -72,11 +68,10 @@ export const HighPrioriy: Story = {
   args: {
     id: 1,
     title: 'To do title',
-    date: '2025-08-01T12:00:00.000Z',
-    isCompleted: false,
+    created_at: '2025-08-01T12:00:00.000Z',
+    done: false,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     priority: 3,
-    tags: ['home'],
   },
 };

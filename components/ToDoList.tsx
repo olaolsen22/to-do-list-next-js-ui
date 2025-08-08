@@ -1,26 +1,41 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { updateToDoItemDoneStatusAction } from '@/actions';
 import { sortToDoListByDate } from '@/lib/sort';
-import type { ToDoCardProps } from '@/types';
+import type { ToDoItemRow } from '@/types/index.ts';
 
 import ToDoCard from './ToDoCard/ToDoCard';
 
 interface ToDoListProps {
-  items: Array<ToDoCardProps>;
-  onToggle: (id: number) => void;
+  items: ToDoItemRow[];
 }
 
-const ToDoList = ({ items, onToggle }: ToDoListProps) => {
-  const [itemList, setItemList] = useState(items);
+const ToDoList = ({ items }: ToDoListProps) => {
+  const [itemsState, setItemsState] = useState<ToDoItemRow[]>(items);
 
-  const toggleToDoItem = (index: number, id: number) => {
-    onToggle(id);
-    setItemList(
+  // ToDo: use css/js magic instead of actually modifying state. Use nextjs to its full advantage
+  const toggleToDoItem = (id: number) => {
+    const currentTodo = itemsState.find((item) => item.id === id);
+    if (!currentTodo) {
+      return;
+    }
+    updateToDoItemDoneStatusAction(id, !currentTodo.done);
+
+    setItemsState((prevState) =>
       sortToDoListByDate(
-        itemList.map((todo, i) => {
-          if (i === index) {
-            return { ...todo, isCompleted: !todo.isCompleted };
+        prevState.map((todo) => {
+          if (todo.id === id) {
+            const newDoneStatus = !todo.done;
+            const newCompletedOn = newDoneStatus
+              ? new Date().toISOString()
+              : null;
+
+            return {
+              ...todo,
+              done: newDoneStatus,
+              completed_on: newCompletedOn,
+            };
           }
           return todo;
         }),
@@ -30,13 +45,12 @@ const ToDoList = ({ items, onToggle }: ToDoListProps) => {
 
   return (
     <ul className="to-do-list flex flex-col gap-4">
-      {itemList.map((item, index) => (
-        <li key={`todo-item-${item.id}`}>
-          <ToDoCard {...item} onToggle={() => toggleToDoItem(index, item.id)} />
+      {itemsState.map((item, index) => (
+        <li key={`todo-item-${index}`}>
+          <ToDoCard {...item} onToggle={toggleToDoItem} />
         </li>
       ))}
     </ul>
   );
 };
-
 export default ToDoList;

@@ -8,9 +8,10 @@ describe('To Do Card', () => {
   const mockData = {
     id: 1,
     title: 'Write test cases for component',
-    date: '2025-08-01T12:00:00.000Z',
+    description: '',
+    created_at: '2025-08-07T20:20:35.909517+00:00',
     priority: 1 as 1 | 2 | 3,
-    isCompleted: false,
+    done: false,
     onToggle: jest.fn(),
   };
 
@@ -22,11 +23,7 @@ describe('To Do Card', () => {
 
     it('renders the formatted task date from a UTC string', () => {
       render(<ToDoCard {...mockData} />);
-      const expectedDate = new Date(mockData.date).toLocaleDateString('nb-NO', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      });
+      const expectedDate = '07.08.2025';
       expect(screen.getByText(expectedDate)).toBeInTheDocument();
     });
 
@@ -71,16 +68,16 @@ describe('To Do Card', () => {
       expect(mockOnToggle).toHaveBeenCalledTimes(1);
     });
 
-    it('renders an unchecked checkbox when isCompleted is false', () => {
-      render(<ToDoCard {...mockData} isCompleted={false} />);
+    it('renders an unchecked checkbox when done is false', () => {
+      render(<ToDoCard {...mockData} done={false} />);
 
       const checkboxElement = screen.getByRole('checkbox');
 
       expect(checkboxElement).not.toBeChecked();
     });
 
-    it('renders a checked checkbox when isCompleted is true', () => {
-      render(<ToDoCard {...mockData} isCompleted={true} />);
+    it('renders a checked checkbox when done is true', () => {
+      render(<ToDoCard {...mockData} done={true} />);
 
       const checkboxElement = screen.getByRole('checkbox');
 

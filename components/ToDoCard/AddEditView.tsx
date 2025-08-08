@@ -1,30 +1,38 @@
 'use client';
 import React, { useState } from 'react';
 
-import type { ToDoDataProps } from '@/types';
+import type { ToDoItemRow } from '@/types';
 
 import Field from '../_Common/Field';
 import RadioGroup from '../_Common/RadioGroup';
 import TextArea from '../_Common/TextArea';
 
-const defaultData: ToDoDataProps = {
+export type EditableToDoItem = Omit<
+  ToDoItemRow,
+  'id' | 'completed_on' | 'created_at'
+>;
+
+// Default data
+const defaultData: EditableToDoItem = {
   title: '',
-  date: '',
-  isCompleted: false,
+  done: false,
   description: '',
   priority: 1,
 };
 
+// Props
 interface AddEditViewProps {
-  data?: ToDoDataProps & { id?: number };
-  onSave: (data: ToDoDataProps & { id?: number }) => void;
+  data?: EditableToDoItem & { id?: number }; // Optional id for editing
+  onSave: (data: EditableToDoItem & { id?: number }) => void;
   saving?: boolean;
 }
 
 const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
-  const [formData, setFormData] = useState<ToDoDataProps>(data || defaultData);
+  const [formData, setFormData] = useState<EditableToDoItem>(
+    data || defaultData,
+  );
 
-  const formDataHandler = (type: keyof ToDoDataProps, value: string | number) =>
+  const formDataHandler = (type: keyof ToDoItemRow, value: string | number) =>
     setFormData({ ...formData, [type]: value });
 
   return (
@@ -44,7 +52,7 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
         />
         <RadioGroup
           label="Priority"
-          selectedValue={formData.priority.toString()}
+          selectedValue={(formData.priority ?? 1).toString()}
           onChange={(value) => formDataHandler('priority', Number(value))}
           options={[
             { label: 'Normal', value: 1 },

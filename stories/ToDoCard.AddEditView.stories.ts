@@ -25,12 +25,11 @@ export const EditItem: Story = {
     data: {
       id: 1,
       title: 'To do title',
-      date: '2025-08-01T12:00:00.000Z',
-      isCompleted: false,
+      created_at: '2025-08-01T12:00:00.000Z',
+      done: false,
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       priority: 2,
-      onToggle: fn(),
     },
   },
 };
@@ -40,12 +39,11 @@ export const Saving: Story = {
     data: {
       id: 1,
       title: 'To do title',
-      date: '2025-08-01T12:00:00.000Z',
-      isCompleted: false,
+      created_at: '2025-08-01T12:00:00.000Z',
+      done: false,
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       priority: 1,
-      onToggle: fn(),
     },
     saving: true,
   },
