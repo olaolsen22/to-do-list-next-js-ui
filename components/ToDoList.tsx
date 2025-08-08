@@ -3,16 +3,16 @@ import { useState } from 'react';
 
 import { updateToDoItemDoneStatusAction } from '@/actions';
 import { sortToDoListByDate } from '@/lib/sort';
-import type { ToDoCardProps } from '@/types/index.ts';
+import type { ToDoItemRow } from '@/types/index.ts';
 
 import ToDoCard from './ToDoCard/ToDoCard';
 
 interface ToDoListProps {
-  items: ToDoCardProps[];
+  items: ToDoItemRow[];
 }
 
 const ToDoList = ({ items }: ToDoListProps) => {
-  const [itemsState, setItemsState] = useState<ToDoCardProps[]>(items);
+  const [itemsState, setItemsState] = useState<ToDoItemRow[]>(items);
 
   // ToDo: use css/js magic instead of actually modifying state. Use nextjs to its full advantage
   const toggleToDoItem = (id: number) => {

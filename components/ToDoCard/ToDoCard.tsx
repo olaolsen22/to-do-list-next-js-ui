@@ -2,10 +2,14 @@
 import React, { useState } from 'react';
 
 import { formatDate } from '@/lib/date';
-import type { ToDoCardProps } from '@/types';
+import type { ToDoItemRow } from '@/types';
 
 import AddEditView from './AddEditView';
 import ControlPanel from './ControlPanel';
+
+interface ToDoCardProps extends ToDoItemRow {
+  onToggle: (id: number, done: boolean) => void;
+}
 
 const ToDoCard = ({
   id,
@@ -76,7 +80,6 @@ const ToDoCard = ({
               data={{
                 id,
                 title,
-                created_at,
                 done,
                 description,
                 priority,
