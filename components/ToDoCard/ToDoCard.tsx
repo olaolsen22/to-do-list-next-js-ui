@@ -10,8 +10,8 @@ import ControlPanel from './ControlPanel';
 const ToDoCard = ({
   id,
   title,
-  date,
-  isCompleted,
+  created_at,
+  done,
   description,
   priority,
   onToggle,
@@ -45,19 +45,19 @@ const ToDoCard = ({
         <div className="flex w-full items-center gap-3">
           <input
             type="checkbox"
-            onChange={onToggle}
-            checked={isCompleted}
+            onChange={() => onToggle(id, !done)}
+            checked={done ?? false}
             className="checkbox checkbox-primary checkbox-md self-center rounded-full"
             data-testid={`todo-list-checkbox-${id}`}
           />
           <div className="flex flex-col">
             <p
-              className={`text-sm font-bold ${isCompleted ? 'text-base-content/50 line-through' : ''}`}
+              className={`text-sm font-bold ${done ? 'text-base-content/50 line-through' : ''}`}
             >
               {title} {renderPriority()}
             </p>
             <p className="text-base-content/50 text-[10px] italic">
-              {formatDate(date)}
+              {formatDate(created_at)}
             </p>
           </div>
           <ControlPanel
@@ -76,11 +76,12 @@ const ToDoCard = ({
               data={{
                 id,
                 title,
-                date,
-                isCompleted,
+                created_at,
+                done,
                 description,
                 priority,
               }}
+              // eslint-disable-next-line no-console
               onSave={() => console.log('save')}
               saving={false}
             />

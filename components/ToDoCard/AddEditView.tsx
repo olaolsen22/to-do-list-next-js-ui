@@ -9,8 +9,8 @@ import TextArea from '../_Common/TextArea';
 
 const defaultData: ToDoDataProps = {
   title: '',
-  date: '',
-  isCompleted: false,
+  created_at: '',
+  done: false,
   description: '',
   priority: 1,
 };
@@ -44,7 +44,7 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
         />
         <RadioGroup
           label="Priority"
-          selectedValue={formData.priority.toString()}
+          selectedValue={(formData.priority ?? 1).toString()}
           onChange={(value) => formDataHandler('priority', Number(value))}
           options={[
             { label: 'Normal', value: 1 },
