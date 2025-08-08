@@ -4,31 +4,40 @@ import userEvent from '@testing-library/user-event';
 
 import type { ToDoCardProps } from '@/types';
 
+import * as ToDoActions from '../actions';
 import ToDoList from '../components/ToDoList';
+
+jest.mock('../actions', () => ({
+  ...jest.requireActual('../actions'),
+  updateToDoItemDoneStatusAction: jest.fn(),
+}));
 
 describe('ToDoList', () => {
   const mockData: Array<ToDoCardProps & { id: number }> = [
     {
       id: 1,
       title: 'To Do Item 1',
-      date: '2025-08-01T12:00:00.000Z',
-      isCompleted: false,
+      description: '',
+      created_at: '2025-08-01T12:00:00.000Z',
+      done: false,
       priority: 1,
       onToggle: jest.fn(),
     },
     {
       id: 2,
       title: 'To Do Item 2',
-      date: '2025-07-30T12:00:00.000Z',
-      isCompleted: true,
+      description: '',
+      created_at: '2025-07-30T12:00:00.000Z',
+      done: true,
       priority: 1,
       onToggle: jest.fn(),
     },
     {
       id: 3,
       title: 'To Do Item 3',
-      date: '2025-07-20T12:00:00.000Z',
-      isCompleted: true,
+      description: '',
+      created_at: '2025-07-20T12:00:00.000Z',
+      done: true,
       priority: 1,
       onToggle: jest.fn(),
     },
@@ -36,7 +45,7 @@ describe('ToDoList', () => {
 
   describe('Rendering', () => {
     it('renders all task titles from the items prop', () => {
-      render(<ToDoList items={mockData} onToggle={jest.fn()} />);
+      render(<ToDoList items={mockData} />);
 
       mockData.forEach((item) => {
         expect(screen.getByText(item.title)).toBeInTheDocument();
@@ -44,22 +53,28 @@ describe('ToDoList', () => {
     });
 
     it('renders the correct number of to-do cards', () => {
-      render(<ToDoList items={mockData} onToggle={jest.fn()} />);
+      render(<ToDoList items={mockData} />);
       const listItems = screen.getAllByRole('listitem');
       expect(listItems).toHaveLength(mockData.length);
     });
   });
 
   describe('Interaction', () => {
-    it('calls the onToggle function with the correct id when a checkbox is clicked', async () => {
+    it('calls the updateToDoItemDoneStatusAction with the correct id and status when a checkbox is clicked', async () => {
       const user = userEvent.setup();
-      const mockOnToggle = jest.fn();
-      render(<ToDoList items={mockData} onToggle={mockOnToggle} />);
+      render(<ToDoList items={mockData} />);
 
       const checkboxElement = screen.getByTestId('todo-list-checkbox-1');
       await user.click(checkboxElement);
 
-      expect(mockOnToggle).toHaveBeenCalledTimes(1);
+      // We expect the updateToDoItemDoneStatusAction to be called once with the correct arguments.
+      expect(ToDoActions.updateToDoItemDoneStatusAction).toHaveBeenCalledTimes(
+        1,
+      );
+      expect(ToDoActions.updateToDoItemDoneStatusAction).toHaveBeenCalledWith(
+        1,
+        true,
+      );
     });
   });
 });
