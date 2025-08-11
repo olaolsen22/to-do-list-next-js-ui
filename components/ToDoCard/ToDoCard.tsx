@@ -7,7 +7,7 @@ import type { ToDoItemRow } from '@/types';
 import AddEditView from './AddEditView';
 import ControlPanel from './ControlPanel';
 
-interface ToDoCardProps extends ToDoItemRow {
+export interface ToDoCardProps extends ToDoItemRow {
   onToggle: (id: number, done: boolean) => void;
 }
 

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import { updateToDoItemDoneStatusAction } from '@/actions';
+import AddToDoItem from '@/components/AddToDoItem';
 import { sortToDoListByDate } from '@/lib/sort';
 import type { ToDoItemRow } from '@/types/index.ts';
 
@@ -21,7 +22,6 @@ const ToDoList = ({ items }: ToDoListProps) => {
       return;
     }
     updateToDoItemDoneStatusAction(id, !currentTodo.done);
-
     setItemsState((prevState) =>
       sortToDoListByDate(
         prevState.map((todo) => {
@@ -43,14 +43,21 @@ const ToDoList = ({ items }: ToDoListProps) => {
     );
   };
 
+  const addItem = (item: ToDoItemRow) => {
+    setItemsState((prevItems) => [item, ...prevItems]);
+  };
+
   return (
-    <ul className="to-do-list flex flex-col gap-4">
-      {itemsState.map((item, index) => (
-        <li key={`todo-item-${index}`}>
-          <ToDoCard {...item} onToggle={toggleToDoItem} />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="to-do-list flex flex-col gap-4">
+        {itemsState.map((item, index) => (
+          <li key={`todo-item-${index}`}>
+            <ToDoCard {...item} onToggle={toggleToDoItem} />
+          </li>
+        ))}
+      </ul>
+      <AddToDoItem onAddItem={addItem} />
+    </>
   );
 };
 export default ToDoList;
