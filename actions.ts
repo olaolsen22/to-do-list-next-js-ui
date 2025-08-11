@@ -1,10 +1,15 @@
 'use server';
 
-import { updateToDoItemDoneStatus } from '@/lib/data/todo';
+import { createToDoItem, updateToDoItemDoneStatus } from '@/lib/data/todo';
 
 export async function updateToDoItemDoneStatusAction(
-  id: number,
-  done: boolean,
+  ...args: Parameters<typeof updateToDoItemDoneStatus>
 ) {
-  await updateToDoItemDoneStatus(id, done);
+  await updateToDoItemDoneStatus(...args);
+}
+
+export async function createToDoItemAction(
+  ...args: Parameters<typeof createToDoItem>
+) {
+  return await createToDoItem(...args);
 }

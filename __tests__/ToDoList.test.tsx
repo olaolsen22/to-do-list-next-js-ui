@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import type { ToDoCardProps } from '@/types';
+import type { ToDoCardProps } from '@/components/ToDoCard/ToDoCard';
 
 import * as ToDoActions from '../actions';
 import ToDoList from '../components/ToDoList';
@@ -19,6 +19,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 1',
       description: '',
       created_at: '2025-08-01T12:00:00.000Z',
+      completed_on: null,
       done: false,
       priority: 1,
       onToggle: jest.fn(),
@@ -28,6 +29,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 2',
       description: '',
       created_at: '2025-07-30T12:00:00.000Z',
+      completed_on: null,
       done: true,
       priority: 1,
       onToggle: jest.fn(),
@@ -37,6 +39,7 @@ describe('ToDoList', () => {
       title: 'To Do Item 3',
       description: '',
       created_at: '2025-07-20T12:00:00.000Z',
+      completed_on: null,
       done: true,
       priority: 1,
       onToggle: jest.fn(),

@@ -34,4 +34,21 @@ export async function updateToDoItemDoneStatus(id: number, isDone: boolean) {
   }
 }
 
+export async function createToDoItem(
+  newItem: Database['public']['Tables']['to_do_items']['Insert'],
+) {
+  const { data, error } = await supabase
+    .from('to_do_items')
+    .insert(newItem)
+    .select('*')
+    .single();
+
+  if (error) {
+    console.error('Database Error: ', error);
+    return { error: 'Failed to create task.' };
+  }
+
+  return data as Database['public']['Tables']['to_do_items']['Row'];
+}
+
 // ToDo: create function to get item details by id when clicked

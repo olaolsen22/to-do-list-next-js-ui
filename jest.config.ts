@@ -15,6 +15,9 @@ const config: Config = {
   setupFiles: ['<rootDir>/jest.polyfills.ts'],
   // Place test-specific setup (like jest-dom matchers) here
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import type { ToDoItemRow } from '@/types';
 
@@ -22,27 +22,54 @@ const defaultData: EditableToDoItem = {
 
 // Props
 interface AddEditViewProps {
-  data?: EditableToDoItem & { id?: number }; // Optional id for editing
+  data?: ToDoItemRow;
   onSave: (data: EditableToDoItem & { id?: number }) => void;
   saving?: boolean;
+  shouldReset?: boolean;
+  onResetComplete?: () => void;
 }
 
-const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
+const AddEditView = ({
+  data,
+  onSave,
+  saving,
+  shouldReset,
+  onResetComplete,
+}: AddEditViewProps) => {
   const [formData, setFormData] = useState<EditableToDoItem>(
     data || defaultData,
   );
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  const formDataHandler = (type: keyof ToDoItemRow, value: string | number) =>
+  useEffect(() => {
+    if (shouldReset) {
+      setFormData(defaultData);
+      setHasInteracted(false); // Reset interaction state
+      onResetComplete?.();
+    }
+  }, [shouldReset, onResetComplete]);
+
+  useEffect(() => {
+    setFormData(data || defaultData);
+    setHasInteracted(!!data);
+  }, [data]);
+
+  const formDataHandler = (type: keyof ToDoItemRow, value: string | number) => {
     setFormData({ ...formData, [type]: value });
+    if (!hasInteracted) {
+      setHasInteracted(true);
+    }
+  };
 
   return (
     <div>
-      <fieldset className="fieldset p-4">
+      <fieldset className="fieldset p-0">
         <Field
           label="Title"
           value={formData.title}
           onChange={(value) => formDataHandler('title', value)}
           disabled={saving}
+          isRequired={hasInteracted}
         />
         <TextArea
           label="Description"
@@ -64,7 +91,7 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
         <button
           className="btn btn-primary mt-4 ml-auto"
           onClick={() => onSave({ ...formData, id: data?.id })}
-          disabled={saving}
+          disabled={saving || formData.title.length === 0}
         >
           {saving && <span className="loading loading-spinner" />}
           Save
