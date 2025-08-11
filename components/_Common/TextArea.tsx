@@ -21,7 +21,7 @@ const TextArea = ({
     </label>
     <textarea
       id={`${label}-input`}
-      className="textarea h-24 w-full"
+      className="textarea mb-3 h-24 w-full"
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
