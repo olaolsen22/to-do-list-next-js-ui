@@ -2,7 +2,7 @@
 
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { createToDoItemAction } from '@/actions';
 import Modal from '@/components/_Common/Modal';
@@ -19,6 +19,9 @@ interface AddToDoItemProps {
 const AddToDoItem = ({ onAddItem }: AddToDoItemProps) => {
   const modalRef = useRef<HTMLDialogElement>(null);
   const router = useRouter();
+  const [shouldResetForm, setShouldResetForm] = useState(false);
+  const [saveComplete, setSaveComplete] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const { run: saveItem, isLoading } = useServerAction(createToDoItemAction);
 
@@ -29,10 +32,26 @@ const AddToDoItem = ({ onAddItem }: AddToDoItemProps) => {
       return;
     } else {
       onAddItem(res);
+      setSaveComplete(true);
+      setIsClosing(true);
       modalRef.current?.close();
       router.refresh();
     }
   };
+
+  const handleModalCloseComplete = () => {
+    setIsClosing(false);
+    if (saveComplete) {
+      setShouldResetForm(true);
+      setSaveComplete(false);
+    }
+  };
+
+  const handleResetComplete = () => {
+    setShouldResetForm(false);
+  };
+
+  const fieldsDisabled = isLoading || (isClosing && saveComplete);
 
   return (
     <>
@@ -41,8 +60,14 @@ const AddToDoItem = ({ onAddItem }: AddToDoItemProps) => {
         title="Add new todo item"
         proceedText="Save"
         isLoading={isLoading}
+        onCloseComplete={handleModalCloseComplete}
       >
-        <AddEditView onSave={handleSave} saving={isLoading} />
+        <AddEditView
+          onSave={handleSave}
+          saving={fieldsDisabled}
+          shouldReset={shouldResetForm}
+          onResetComplete={handleResetComplete}
+        />
       </Modal>
       <div className="absolute right-4 bottom-4">
         <div className="tooltip tooltip-left" data-tip="Add new todo item">

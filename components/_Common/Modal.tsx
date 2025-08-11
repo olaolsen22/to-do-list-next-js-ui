@@ -8,6 +8,7 @@ interface ModalProps {
   cancelText?: string;
   children: ReactNode;
   isLoading?: boolean;
+  onCloseComplete?: () => void;
 }
 // ToDo: Fix vertical invisible scrollbar showing when modal opens
 const Modal = forwardRef<HTMLDialogElement, ModalProps>(
@@ -20,6 +21,7 @@ const Modal = forwardRef<HTMLDialogElement, ModalProps>(
       isLoading = false,
       proceedAction,
       cancelAction,
+      onCloseComplete,
     },
     ref,
   ) => {
@@ -33,6 +35,21 @@ const Modal = forwardRef<HTMLDialogElement, ModalProps>(
       window.addEventListener('keydown', handler);
       return () => window.removeEventListener('keydown', handler);
     }, [isLoading]);
+
+    useEffect(() => {
+      const dialog = ref && 'current' in ref ? ref.current : null;
+
+      if (dialog && onCloseComplete) {
+        const handleClose = () => {
+          setTimeout(() => {
+            onCloseComplete();
+          }, 300);
+        };
+
+        dialog.addEventListener('close', handleClose);
+        return () => dialog.removeEventListener('close', handleClose);
+      }
+    }, [ref, onCloseComplete]);
 
     return (
       <dialog ref={ref} className="modal">
