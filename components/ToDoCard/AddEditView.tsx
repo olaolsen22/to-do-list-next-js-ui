@@ -22,7 +22,7 @@ const defaultData: EditableToDoItem = {
 
 // Props
 interface AddEditViewProps {
-  data?: EditableToDoItem & { id?: number }; // Optional id for editing
+  data?: ToDoItemRow;
   onSave: (data: EditableToDoItem & { id?: number }) => void;
   saving?: boolean;
 }
@@ -37,12 +37,13 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
 
   return (
     <div>
-      <fieldset className="fieldset p-4">
+      <fieldset className="fieldset p-0">
         <Field
           label="Title"
           value={formData.title}
           onChange={(value) => formDataHandler('title', value)}
           disabled={saving}
+          isRequired={true}
         />
         <TextArea
           label="Description"
@@ -64,7 +65,7 @@ const AddEditView = ({ data, onSave, saving }: AddEditViewProps) => {
         <button
           className="btn btn-primary mt-4 ml-auto"
           onClick={() => onSave({ ...formData, id: data?.id })}
-          disabled={saving}
+          disabled={saving || formData.title.length === 0}
         >
           {saving && <span className="loading loading-spinner" />}
           Save
